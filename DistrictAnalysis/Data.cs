@@ -167,8 +167,13 @@ namespace DistrictAnalysis
             WriteColour("There are " + incomplete + " left to complete.", ConsoleColor.White);
 
             // 8 for 6 lines
-            float moneyPerLine = 8f / 6f;
-            const int JAMES_START_LINE = 137;
+
+            float eurosPerDollar = ExchangeRateChecker.GetEurosPerDollar();
+            float dollars = 10f;
+            float lines = 6f;
+
+            float moneyPerLine = dollars / lines;
+            const int JAMES_START_LINE = 135;
             const int JAMES_END_LINE = 451;
 
             int jamesSat = 0;
@@ -176,6 +181,9 @@ namespace DistrictAnalysis
 
             for (int i = JAMES_START_LINE; i < JAMES_END_LINE; i++)
             {
+                if (i > States.Count)
+                    break;
+
                 if((byte)States[i] <= 2)
                 {
                     jamesSat++;
@@ -190,7 +198,7 @@ namespace DistrictAnalysis
             WriteColour("So far James has successfully completed " + jamesSat + " lines.", ConsoleColor.Blue);
             WriteColour("So far James has partially completed " + jamesNotSat + " lines.", ConsoleColor.DarkCyan);
 
-            float money = jamesSat * moneyPerLine;
+            float money = jamesSat * moneyPerLine * eurosPerDollar;
 
             Console.WriteLine();
             WriteColour("{0, -20} {1, 4} {2, 7}", ConsoleColor.White, "Item", "QTY", "TOTAL");
