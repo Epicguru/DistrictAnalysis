@@ -47,12 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CookieWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Data.cs" />
     <Compile Include="ExchangeRateChecker.cs" />
-    <Compile Include="FileDownloader.cs" />
     <Compile Include="LineState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

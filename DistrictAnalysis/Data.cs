@@ -140,7 +140,7 @@ namespace DistrictAnalysis
             return LineState.INCOMPLETE;
         }
 
-        public static void Analyze(string[][] data)
+        public static int Analyze(string[][] data)
         {
             States.Clear();
             foreach(var line in Loaded)
@@ -206,6 +206,7 @@ namespace DistrictAnalysis
             WriteColour("{0, -20} {1, 4} {2, 7:N2}", ConsoleColor.DarkGray, "Completed Lines", "x" + jamesSat, money);
             Console.WriteLine();
 
+            return jamesSat;
         }
     } 
 }

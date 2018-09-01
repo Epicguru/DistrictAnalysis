@@ -16,7 +16,7 @@ namespace DistrictAnalysis
         {
             Console.WriteLine("Hey there! Analysis software by James B.");
             Console.WriteLine();
-            Console.WriteLine();
+            Console.WriteLine();            
 
             string filePath = null;
             bool downloading = false;
@@ -118,10 +118,66 @@ namespace DistrictAnalysis
             Console.WriteLine();
             Console.WriteLine();
 
-            Data.Analyze(Data.Loaded);
+            int done = Data.Analyze(Data.Loaded);
 
             // Delete the downloaded file.
             File.Delete(filePath);
+
+            string savePath = Path.Combine(Environment.CurrentDirectory, "Save.txt");
+            DateTime currentTime = DateTime.Now;
+            DateTime lastRun = currentTime;
+            int lastDone = 0;
+            if (File.Exists(savePath))
+            {
+                // Read...
+                try
+                {
+                    var bytez = File.ReadAllBytes(savePath);
+                    lastRun = DateTime.FromBinary(BitConverter.ToInt64(bytez, 0));
+                    lastDone = BitConverter.ToInt32(bytez, 8);
+                }
+                catch (Exception e)
+                {
+
+                }
+                finally
+                {
+                    Console.WriteLine("Last run: " + lastRun);
+                    Console.WriteLine("Last done: " + lastDone);
+                }
+            }
+
+            var elapsedTime = currentTime - lastRun;
+            int doneChange = done - lastDone;
+
+            if(doneChange == 0)
+            {
+                Console.WriteLine("No progress made since last run.");
+            }
+            else
+            {
+                float minutes = (float)elapsedTime.TotalMinutes;
+                float donePerMinute = doneChange / minutes;
+
+                float eurosPerDollar = 0.854099f;
+                float dollars = 10f;
+                float lines = 6f;
+
+                float moneyPerLine = dollars / lines;
+
+                float moneyPerMinute = donePerMinute * moneyPerLine * eurosPerDollar;
+
+                Console.WriteLine("You have done " + doneChange + " lines since the last run:");
+                Console.WriteLine(elapsedTime.TotalMinutes + " minutes ago.");
+                Console.WriteLine("That means " + donePerMinute + " lines per minute, giving:");
+                Console.WriteLine(moneyPerMinute + " euros per minute which is");
+                Console.WriteLine(moneyPerMinute * 60 + " euros per hour.");
+            }
+
+            var bytes = new byte[12];
+            Array.Copy(BitConverter.GetBytes(currentTime.ToBinary()), 0, bytes, 0, 8);
+            Array.Copy(BitConverter.GetBytes(done), 0, bytes, 8, 4);
+            File.WriteAllBytes(savePath, bytes);
 
             Console.WriteLine();
 

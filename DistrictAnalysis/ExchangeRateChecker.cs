@@ -11,7 +11,7 @@ public static class ExchangeRateChecker
     public static float GetEurosPerDollar()
     {
         Console.Write("Downloading exchange rate... ");
-        const float BASE_VALUE = 0.876407f;
+        const float BASE_VALUE = 0.854099f;
         using (var client = new WebClient())
         {
             try
